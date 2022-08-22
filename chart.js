@@ -11,7 +11,7 @@ function createChart({ hanleClickNode }) {
 
   const simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().strength(-1000))
-    .force("link", d3.forceLink().id(d => d.id).distance(500))
+    .force("link", d3.forceLink().id(d => d.id).distance(200))
     .force("center", d3.forceCenter(width / 2, height / 2))
     .force("y", d3.forceY(height / 2))
     .on("tick", ticked);

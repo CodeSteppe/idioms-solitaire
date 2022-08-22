@@ -33,12 +33,14 @@ function drawFirstIdiom() {
 function findNext() {
   console.log('currentIdiom', currentIdiom)
   const matches = idioms.filter(idiom => idiom.id[0] === currentIdiom.id.split('').pop());
+  if (matches.length <= 0) return;
+  const match = matches[getRandomInt(0, matches.length)];
   console.log('matches', matches);
-  data.nodes.push(...matches);
-  data.links.push(...(matches.map(match => ({
+  data.nodes.push(match);
+  data.links.push({
     source: currentIdiom.id,
     target: match.id,
-  }))));
+  });
   chart.update(data);
 }
 

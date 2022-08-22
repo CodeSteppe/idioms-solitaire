@@ -1,46 +1,45 @@
-const chart = createChart();
-
-const graph1 = {
-  nodes: [
-    { id: "a" },
-  ],
-  links: []
+// variables
+let currentIdiom;
+let data = {
+  nodes: [],
+  links: [],
 }
 
-const graph2 = {
-  nodes: [
-    { id: "a" },
-    { id: "b" }
-  ],
-  links: [
-    { source: "a", target: "b" }
-  ]
+// functions
+const chart = createChart({
+  hanleClickNode: (event, dataItem) => {
+    console.log('clicked', dataItem);
+    currentIdiom = dataItem;
+    findNext();
+  }
+});
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
-const graph3 = {
-  nodes: [
-    { id: "a" },
-    { id: "b" },
-    { id: "c" }
-  ],
-  links: [
-    { source: "a", target: "b" },
-    { source: "b", target: "c" },
-    { source: "c", target: "a" }
-  ]
+function drawFirstIdiom() {
+  currentIdiom = idioms[getRandomInt(0, idioms.length)];
+  data.nodes.push({
+    id: currentIdiom.id,
+    pinyin: currentIdiom.pinyin
+  });
+  chart.update(data);
 }
 
 
+function findNext() {
+  console.log('currentIdiom', currentIdiom)
+  const matches = idioms.filter(idiom => idiom.id[0] === currentIdiom.id.split('').pop());
+  console.log('matches', matches);
+  data.nodes.push(...matches);
+  data.links.push(...(matches.map(match => ({
+    source: currentIdiom.id,
+    target: match.id,
+  }))));
+  chart.update(data);
+}
 
-
-setInterval(() => {
-  chart.update(graph1);
-
-  setTimeout(() => {
-    chart.update(graph2);
-  }, 3000)
-
-  setTimeout(() => {
-    chart.update(graph3);
-  }, 6000)
-}, 9000)
+drawFirstIdiom();

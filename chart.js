@@ -11,8 +11,8 @@ function createChart({ hanleClickNode }) {
   const transformer = svg.select('#transformer');
 
   const simulation = d3.forceSimulation()
-    .force("charge", d3.forceManyBody().strength(-1000))
-    .force("link", d3.forceLink().id(d => d.id).distance(200))
+    .force("charge", d3.forceManyBody().strength(-3000))
+    .force("link", d3.forceLink().id(d => d.id).distance(250))
     .force("x", d3.forceX())
     .force("y", d3.forceY())
     .on("tick", ticked);

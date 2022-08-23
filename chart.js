@@ -5,15 +5,16 @@ color = d3.scaleOrdinal(d3.schemeTableau10);
 function createChart({ hanleClickNode }) {
   const svg = d3.select("svg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .attr("viewBox", [-width / 2, -height / 2, width, height]);
     
   const transformer = svg.select('#transformer');
 
   const simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().strength(-1000))
     .force("link", d3.forceLink().id(d => d.id).distance(200))
-    .force("center", d3.forceCenter(width / 2, height / 2))
-    .force("y", d3.forceY(height / 2))
+    .force("x", d3.forceX())
+    .force("y", d3.forceY())
     .on("tick", ticked);
 
   let link = transformer.append("g")
@@ -35,7 +36,7 @@ function createChart({ hanleClickNode }) {
 
   function drag() {
     function dragstarted(event) {
-      if (!event.active) simulation.alphaTarget(1).restart();
+      if (!event.active) simulation.alphaTarget(0.3).restart();
       event.subject.fx = event.subject.x;
       event.subject.fy = event.subject.y;
     }
@@ -46,7 +47,7 @@ function createChart({ hanleClickNode }) {
     }
 
     function dragended(event) {
-      if (!event.active) simulation.alphaTarget(1);
+      if (!event.active) simulation.alphaTarget(0);
       event.subject.fx = null;
       event.subject.fy = null;
     }
@@ -82,7 +83,7 @@ function createChart({ hanleClickNode }) {
             text.textContent = d.id;
             const circle = node.querySelector('circle');
             circle.style.fill = color(d.id);
-            circle.style.r = d.id.length * 10;
+            circle.style.r = d.id.length * 9;
             return node;
           })
         })
@@ -91,7 +92,8 @@ function createChart({ hanleClickNode }) {
 
       link = link
         .data(links, d => `${d.source.id}\t${d.target.id}`)
-        .join("line");
+        .join("line")
+        .attr("marker-end", d => `url(#arrow)`);
     }
   });
 }

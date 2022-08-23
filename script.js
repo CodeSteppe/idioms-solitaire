@@ -1,3 +1,7 @@
+// DOM
+const graph = document.querySelector('#graph');
+const transformer = document.querySelector('#transformer');
+
 // variables
 let currentIdiom;
 let data = {
@@ -32,10 +36,13 @@ function drawFirstIdiom() {
 
 function findNext() {
   console.log('currentIdiom', currentIdiom)
-  const matches = idioms.filter(idiom => idiom.id[0] === currentIdiom.id.split('').pop());
-  if (matches.length <= 0) return;
+  const lastWord = currentIdiom.id.split('').pop();
+  const matches = idioms.filter(idiom => idiom.id[0] === lastWord);
+  if (matches.length <= 0) {
+    alert(`哎呀，找不到以“${lastWord}”开头的成语了`);
+  }
   const match = matches[getRandomInt(0, matches.length)];
-  console.log('matches', matches);
+  if (data.nodes.find(node => node.id === match.id)) return;
   data.nodes.push(match);
   data.links.push({
     source: currentIdiom.id,
@@ -45,3 +52,36 @@ function findNext() {
 }
 
 drawFirstIdiom();
+
+// handle graph drag move
+let startPoint = { x: 0, y: 0 };
+let lastTranslate = { x: 0, y: 0 };
+let translate = { x: 0, y: 0 };
+
+function handleMouseDown(e) {
+  const { clientX, clientY } = e;
+  startPoint = {
+    x: clientX,
+    y: clientY,
+  };
+  graph.addEventListener('mousemove', handleMouseMove);
+}
+
+function handleMouseMove(e) {
+  const { clientX, clientY } = e;
+  const deltaX = clientX - startPoint.x;
+  const deltaY = clientY - startPoint.y;
+  translate = {
+    x: lastTranslate.x + deltaX,
+    y: lastTranslate.y + deltaY
+  };
+  transformer.style.transform = `translate(${translate.x}px, ${translate.y}px)`;
+}
+
+function handleMouseUp(e) {
+  lastTranslate = translate;
+  graph.removeEventListener('mousemove', handleMouseMove);
+}
+
+graph.addEventListener('mousedown', handleMouseDown);
+document.addEventListener('mouseup', handleMouseUp);

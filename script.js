@@ -1,6 +1,7 @@
 // DOM
 const graph = document.querySelector('#graph');
-const transformer = document.querySelector('#transformer');
+const zoomer = document.querySelector('#zoomer');
+const translater = document.querySelector('#translater');
 
 // variables
 let currentIdiom;
@@ -42,7 +43,7 @@ function findNext() {
     alert(`哎呀，找不到以“${lastWord}”开头的成语了`);
     return
   }
-  
+
   let match;
   for (const m of matches) {
     if (data.nodes.find(n => n.id === m.id)) {
@@ -66,10 +67,13 @@ function findNext() {
 
 drawFirstIdiom();
 
-// handle graph drag move
+/**
+ * Graph transform
+ */
 let startPoint = { x: 0, y: 0 };
 let lastTranslate = { x: 0, y: 0 };
 let translate = { x: 0, y: 0 };
+let scale = 1;
 
 function handleMouseDown(e) {
   const { clientX, clientY } = e;
@@ -88,7 +92,7 @@ function handleMouseMove(e) {
     x: lastTranslate.x + deltaX,
     y: lastTranslate.y + deltaY
   };
-  transformer.style.transform = `translate(${translate.x}px, ${translate.y}px)`;
+  translater.style.transform = `translate(${translate.x}px, ${translate.y}px)`;
 }
 
 function handleMouseUp(e) {
@@ -96,5 +100,18 @@ function handleMouseUp(e) {
   graph.removeEventListener('mousemove', handleMouseMove);
 }
 
+function handleWheel(e) {
+  const { deltaY } = e;
+  const direction = deltaY < 0 ? 1 : -1;
+  scale += direction * 0.1;
+  if (scale < 0.1) {
+    scale = 0.1;
+  } else {
+    scale = Number(scale.toFixed(2));
+  }
+  zoomer.style.transform = `scale(${scale})`;
+}
+
 graph.addEventListener('mousedown', handleMouseDown);
 document.addEventListener('mouseup', handleMouseUp);
+graph.addEventListener('wheel', handleWheel);

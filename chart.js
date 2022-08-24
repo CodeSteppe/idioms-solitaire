@@ -8,7 +8,7 @@ function createChart({ hanleClickNode }) {
     .attr("height", height)
     .attr("viewBox", [-width / 2, -height / 2, width, height]);
     
-  const transformer = svg.select('#transformer');
+  const zoomer = svg.select('#zoomer');
 
   const simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().strength(-3000))
@@ -17,12 +17,12 @@ function createChart({ hanleClickNode }) {
     .force("y", d3.forceY())
     .on("tick", ticked);
 
-  let link = transformer.append("g")
+  let link = zoomer.append("g")
     .attr("stroke", "#999")
     .attr("stroke-width", 1.5)
     .selectAll("line");
 
-  let node = transformer.append("g").selectAll("g");
+  let node = zoomer.append("g").selectAll("g");
 
   function ticked() {
 

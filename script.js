@@ -40,9 +40,22 @@ function findNext() {
   const matches = idioms.filter(idiom => idiom.id[0] === lastWord);
   if (matches.length <= 0) {
     alert(`哎呀，找不到以“${lastWord}”开头的成语了`);
+    return
   }
-  const match = matches[getRandomInt(0, matches.length)];
-  if (data.nodes.find(node => node.id === match.id)) return;
+  
+  let match;
+  for (const m of matches) {
+    if (data.nodes.find(n => n.id === m.id)) {
+      // 如果接龙里面已经有这个成语，则跳过
+      continue;
+    }
+    match = m;
+  }
+  if (!match) {
+    alert(`哎呀，以“${lastWord}”开头的成语都已经展示了，找不到更多了`);
+    return
+  }
+
   data.nodes.push(match);
   data.links.push({
     source: currentIdiom.id,

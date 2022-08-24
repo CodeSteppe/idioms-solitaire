@@ -7,7 +7,7 @@ function createChart({ hanleClickNode }) {
     .attr("width", width)
     .attr("height", height)
     .attr("viewBox", [-width / 2, -height / 2, width, height]);
-    
+
   const zoomer = svg.select('#zoomer');
 
   const simulation = d3.forceSimulation()
@@ -84,6 +84,11 @@ function createChart({ hanleClickNode }) {
             const circle = node.querySelector('circle');
             circle.style.fill = color(d.id);
             circle.style.r = d.id.length * 9;
+
+            const isFirstNode = d.index === 0;
+            if (isFirstNode) {
+              node.classList.add('first-node');
+            }
             return node;
           })
         })

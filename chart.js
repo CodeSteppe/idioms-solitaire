@@ -1,7 +1,7 @@
 color = d3.scaleOrdinal(d3.schemeTableau10);
 
-function createChart({ hanleClickNode }) {
-  const svg = d3.select("svg")
+function createChart({ svgElement, hanleClickNode }) {
+  const svg = d3.select(svgElement);
   const zoomer = svg.select('#zoomer');
 
   const simulation = d3.forceSimulation()

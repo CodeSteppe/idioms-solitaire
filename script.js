@@ -14,7 +14,7 @@ let data = {
 function setGraphSize() {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  graph.setAttribute('width',width);
+  graph.setAttribute('width', width);
   graph.setAttribute('height', height);
   graph.setAttribute('viewBox', `${-width / 2}, ${-height / 2}, ${width}, ${height}`);
 }
@@ -22,6 +22,7 @@ setGraphSize();
 window.addEventListener('resize', setGraphSize);
 
 const chart = createChart({
+  svgElement: graph,
   hanleClickNode: (event, dataItem) => {
     console.log('clicked', dataItem);
     currentIdiom = dataItem;

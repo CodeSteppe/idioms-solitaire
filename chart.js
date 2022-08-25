@@ -1,13 +1,7 @@
-const width = window.innerWidth;
-const height = window.innerHeight;
 color = d3.scaleOrdinal(d3.schemeTableau10);
 
 function createChart({ hanleClickNode }) {
   const svg = d3.select("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .attr("viewBox", [-width / 2, -height / 2, width, height]);
-
   const zoomer = svg.select('#zoomer');
 
   const simulation = d3.forceSimulation()

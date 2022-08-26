@@ -6,7 +6,7 @@ function createChart({ svgElement, hanleClickNode }) {
 
   const simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().strength(-3000))
-    .force("link", d3.forceLink().id(d => d.id).distance(250))
+    .force("link", d3.forceLink().id(d => d.id).distance(300))
     .force("x", d3.forceX())
     .force("y", d3.forceY())
     .on("tick", ticked);
@@ -77,7 +77,7 @@ function createChart({ svgElement, hanleClickNode }) {
             text.textContent = d.id;
             const circle = node.querySelector('circle');
             circle.style.fill = color(d.id);
-            circle.style.r = d.id.length * 9;
+            circle.style.r = d.id.length * 14;
 
             const isFirstNode = d.index === 0;
             if (isFirstNode) {

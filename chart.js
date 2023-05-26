@@ -82,7 +82,9 @@ function createChart({
             text.textContent = d.id;
             const circle = node.querySelector('circle');
             circle.style.fill = color(d.id);
-            circle.style.r = d.id.length * 14;
+            console.log('Color for id:', d.id, color(d.id));
+            circle.r.baseVal.value = d.id.length * 14; 
+            // circle.style.r = d.id.length * 14;
             const isFirstNode = d.index === 0;
             if (isFirstNode) {
               node.classList.add('first-node');
